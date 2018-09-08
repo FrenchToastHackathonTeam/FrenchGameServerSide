@@ -1,0 +1,26 @@
+import os
+import sys
+from sqlalchemy import Column, ForeignKey, Integer, String, CheckConstraint
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import relationships
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
+
+class VecPic(Base):
+    __tabblename__ = 'vecpic'
+    studID = Column(Integer)
+    word = Column(String)
+    pic = Column(String)
+
+class PicDB:
+    def __init__(self, address):
+        engine = create_engine('address')
+        DBSession = sessionmaker(bind=engine)
+        self.session = DBSession()
+
+    def add_picture(self, studID, word, pic):
+        new_pic = VecPic(studID, word, '~/images_db/' + studID + '/' + pic)
+        self.session.add(new_pic)
+        self.session.commit()
